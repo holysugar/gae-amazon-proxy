@@ -14,15 +14,14 @@ import paapi as am
 
 # hashlib.sha256(message).hexdigest()
 
-default_aid = 'hwps-22'
 def config():
     c = ConfigParser.ConfigParser()
     c.read('amazon-proxy.ini')
     c.access_key = lambda: c.get('amazon-proxy', 'access_key')
     c.secret_key = lambda: c.get('amazon-proxy', 'secret_key')
     c.entry_point = lambda: c.get('amazon-proxy', 'entry_point')
+    c.default_aid = lambda: c.get('amazon-proxy', 'default_aid')
     return c
-
 
 class MainPage(webapp.RequestHandler):
     def get(self):
@@ -41,15 +40,14 @@ class MainPage(webapp.RequestHandler):
                 newparams.append((key, value))
         
         if not params.has_key('AssociateTag'):
-            newparams.append(('AssociateTag', default_aid))
+            newparams.append(('AssociateTag', conf.default_aid()))
 
         newparams.append(('Timestamp',
             time.strftime('%Y-%m-%dT%XZ', time.gmtime())))
 
         url = am.encode(newparams, conf.secret_key())
         
-        self.response.headers['Content-Type'] = 'text/plain'
-        self.response.out.write(url)
+        self.response.headers['Content-Type'] = 'text/xml; charset=utf-8'
 
         result = urlfetch.fetch(url)
 

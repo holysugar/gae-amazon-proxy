@@ -4,7 +4,7 @@ runtime: python
 api_version: 1
 
 handlers:
-- url: /.*
+- url: /onca/.*
   script: amazon-proxy.py
 
 skip_files: |
@@ -18,7 +18,7 @@ skip_files: |
  (.*\.py[co])|
  (.*/RCS/.*)|
  (\..*)|
- (.*\.ini)|
  (.git)|
+ (.*\.sample\.ini)|
  )$
 
