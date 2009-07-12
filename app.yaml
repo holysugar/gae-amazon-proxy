@@ -1,0 +1,24 @@
+application: amazon-proxy
+version: 1
+runtime: python
+api_version: 1
+
+handlers:
+- url: /.*
+  script: amazon-proxy.py
+
+skip_files: |
+ ^(.*/)?(
+ (app\.yaml)|
+ (app\.yml)|
+ (index\.yaml)|
+ (index\.yml)|
+ (#.*#)|
+ (.*~)|
+ (.*\.py[co])|
+ (.*/RCS/.*)|
+ (\..*)|
+ (.*\.ini)|
+ (.git)|
+ )$
+
